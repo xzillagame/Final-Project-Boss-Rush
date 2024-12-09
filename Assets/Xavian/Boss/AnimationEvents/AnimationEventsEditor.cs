@@ -31,6 +31,13 @@ namespace Xavian
         SerializedProperty fireballShotLaunched;
         #endregion
 
+        #region Hurt Events
+        bool hurtDropdown = false;
+
+        SerializedProperty startHurtEvent;
+        SerializedProperty endHurtEvent;
+
+        #endregion
 
         public override void OnInspectorGUI()
         {
@@ -40,7 +47,7 @@ namespace Xavian
 
             BasicAttackPropertiesFoldoutAndUpdate();
             FireballPropertiesFoldoutAndUpdate();
-
+            HurtPropertiesFoldoutAndUpdate();
 
             serializedObject.ApplyModifiedProperties();
 
@@ -53,6 +60,7 @@ namespace Xavian
 
             BasicAttackPropertiesSetup();
             FireballShotPropertiesSetup();
+            HurtAttackPropertiesSetup();
         }
 
         private void FireballShotPropertiesSetup()
@@ -102,6 +110,24 @@ namespace Xavian
 
             }
         }
+
+
+        private void HurtAttackPropertiesSetup()
+        {
+            startHurtEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnStartHurt));
+            endHurtEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndHurt));
+        }
+
+        private void HurtPropertiesFoldoutAndUpdate()
+        {
+            hurtDropdown = EditorGUILayout.Foldout(hurtDropdown, "Hurt Events", true);
+            if(hurtDropdown)
+            {
+                EditorGUILayout.PropertyField(startHurtEvent);
+                EditorGUILayout.PropertyField(endHurtEvent);
+            }
+        }
+
 
     }
 }

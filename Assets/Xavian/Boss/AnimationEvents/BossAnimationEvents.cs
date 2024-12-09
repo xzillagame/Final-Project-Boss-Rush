@@ -40,6 +40,16 @@ namespace Xavian
 
         #endregion
 
+        #region Hurt Event Recievers and Invokers
+
+        [HideInInspector] public UnityEvent OnStartHurt;
+        [HideInInspector] public UnityEvent OnEndHurt;
+
+        private void StartHurt() => OnStartHurt.Invoke();
+        private void EndHurt() => OnEndHurt.Invoke();
+
+        #endregion
+
 
 
     }

@@ -4,37 +4,22 @@ namespace Xavian
 {
     public class BossStateMachine : MonoBehaviour
     {
-        [HideInInspector]public BossLogic bossData;
+        [HideInInspector]public BossDataAndInitalizer bossData;
 
 
         public IdleState idleState;
         public BasicAttackState basicAttackState;
         public GroundedFireballState groundedFireballState;
+        public ChaseState chaseState;
+        public HurtState hurtState;
+
+        public bool CanChangeState = true;
+
 
         private BaseState currentState;
 
-        #region State Change Overrides
 
-        //Overrides current state with desidered function to set state
-
-        public void PerformBasicAttack()
-        {
-            if(currentState != basicAttackState)
-            {
-                TransitionState(basicAttackState);
-            }
-        }
-
-        #endregion
-
-        [ContextMenu("Test Fireball")]
-        private void TestGroundedFireball()
-        {
-            TransitionState(groundedFireballState);
-        }
-
-
-        public void IntilaizeStateMachine(BossLogic boss)
+        public void IntilaizeStateMachine(BossDataAndInitalizer boss)
         {
             bossData = boss;
 
@@ -44,11 +29,12 @@ namespace Xavian
 
         public void TransitionState(BaseState nextState)
         {
-            if(nextState != null && currentState != nextState)
+            if(nextState != null && CanChangeState == true)
             {
                 currentState.ExitState();
                 currentState = nextState;
                 currentState.EnterState(this);
+
             }
         }
 
@@ -57,6 +43,11 @@ namespace Xavian
         private void Update()
         {
             currentState.UpdateState();
+        }
+
+        private void FixedUpdate()
+        {
+            currentState.FixedUpdateState();
         }
 
 

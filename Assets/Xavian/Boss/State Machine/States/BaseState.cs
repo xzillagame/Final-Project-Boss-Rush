@@ -13,6 +13,7 @@ namespace Xavian
 
         virtual public void EnterState(BossStateMachine bossStateMachine) => stateMachine = bossStateMachine;
         virtual public void UpdateState() { }
+        virtual public void FixedUpdateState() { }
         virtual public void ExitState() { }
 
 
