@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 namespace Xavian
 {
@@ -23,51 +24,52 @@ namespace Xavian
 
         private BoltAttack currentBolt = null;
 
+        
+        private Queue<AttackIndiactor> poolReference = new Queue<AttackIndiactor>();
+
+        public void InitialSetupOfIndicator(Queue<AttackIndiactor> pool)
+        {
+            poolReference = pool;
+        }
+
         public void StartIndicator(float timeForAttack = -1)
         {
-
             Vector3 resetedScale = fillCircleScale.localScale;
             resetedScale.x = 0;
             resetedScale.y = 0;
             fillCircleScale.localScale = resetedScale;
 
-            if (timeForAttack <= 0)
+            if (timeForAttack > 0)
             {
                 timeToFilled = timeForAttack;
             }
 
             currentTime = 0f;
-            enabled = true;
 
-        }
-
-        public void SpawnObject()
-        {
-            currentBolt = Instantiate(bolt);
-            currentBolt.InitalizeBolt(transform.position);
-            currentBolt.OnBoltFinished.AddListener(DestoryObject);
-        }
-
-        [ContextMenu("Reset Indicator")]
-        public void Reset()
-        {
-            StartIndicator(timeToFilled);
-        }
-
-        private void DestoryObject()
-        {
-            Destroy(gameObject);
-        }
-
-        private void Start()
-        {
             targetSize.z = 1f;
             targetSize.x = scaleValueToReach;
             targetSize.y = scaleValueToReach;
 
             orginalScale.z = 1;
 
+
+            enabled = true;
+
         }
+        
+        public void DisableIndicator()
+        {
+            poolReference.Enqueue(this);
+            gameObject.SetActive(false);
+        }
+
+        public void SpawnObject()
+        {
+            currentBolt = Instantiate(bolt);
+            currentBolt.InitalizeBolt(transform.position);
+            currentBolt.OnBoltFinished.AddListener(DisableIndicator);
+        }
+
 
         private void Update()
         {
@@ -83,9 +85,10 @@ namespace Xavian
 
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            currentBolt.OnBoltFinished.RemoveListener(DestoryObject);
+            currentBolt.OnBoltFinished.RemoveListener(DisableIndicator);
+            OnIndicatorFinished.RemoveAllListeners();
         }
 
 

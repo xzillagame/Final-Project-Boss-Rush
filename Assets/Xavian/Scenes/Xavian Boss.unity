@@ -5208,63 +5208,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1001 &238907008
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5434307554168285058, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_Name
-      value: AttackIndicator
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.279606
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.94548213
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6881989057402641886, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
 --- !u!1 &248304444
 GameObject:
   m_ObjectHideFlags: 0
@@ -5499,7 +5442,7 @@ Transform:
   m_GameObject: {fileID: 371234371}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.2681637, y: 0.49, z: 6.3}
+  m_LocalPosition: {x: 1.2681637, y: 0.49, z: 10.57}
   m_LocalScale: {x: 29.98, y: 7.2616, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6462,6 +6405,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 130416, guid: 70f277dcf2cdfdd4db7ee0ca76e07767, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1515144443}
+    - targetCorrespondingSourceObject: {fileID: 130416, guid: 70f277dcf2cdfdd4db7ee0ca76e07767, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1515144444}
   m_SourcePrefab: {fileID: 100100000, guid: 70f277dcf2cdfdd4db7ee0ca76e07767, type: 3}
 --- !u!1 &401331926
 GameObject:
@@ -7708,6 +7654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Player>k__BackingField: {fileID: 1588902184}
   <Boss>k__BackingField: {fileID: 1515144439}
+  <GroundCollider>k__BackingField: {fileID: 823968228}
+  boundsExtentsEdgeReduction: -2
+  attackIndicator: {fileID: 5434307554168285058, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
 --- !u!1 &1393724667
 GameObject:
   m_ObjectHideFlags: 0
@@ -7968,6 +7917,15 @@ MonoBehaviour:
   OnEndHurt:
     m_PersistentCalls:
       m_Calls: []
+  OnStartRoar:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBeginRoarAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndRoar:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1515144436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8007,6 +7965,7 @@ MonoBehaviour:
   groundedFireballState: {fileID: 1515144440}
   chaseState: {fileID: 1515144441}
   hurtState: {fileID: 1515144442}
+  lightingAttackState: {fileID: 1515144444}
   CanChangeState: 1
 --- !u!114 &1515144439
 MonoBehaviour:
@@ -8093,6 +8052,24 @@ MonoBehaviour:
   stunDecayRate: 0.05
   timeBeforeDecayResumes: 2
   maxStunCooldownTime: 6
+--- !u!114 &1515144444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515144431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d35a6f8517b45940883a5e53af12b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animCrossValue: 0.5
+  AnimClipName: Scream
+  totalLightingStrikesInPool: 50
+  lightingStrikeCount: 50
+  lightingAttack: {fileID: 5018912694094380416, guid: 22f5fa2eb40acce4089fbb259aa9c8d8, type: 3}
+  lightingBoltDelayTime: 0.1
 --- !u!1 &1572851180
 GameObject:
   m_ObjectHideFlags: 0
@@ -9542,4 +9519,3 @@ SceneRoots:
   - {fileID: 1710097750}
   - {fileID: 544976852}
   - {fileID: 382711185}
-  - {fileID: 238907008}

@@ -4,7 +4,7 @@ namespace Xavian
 {
     public class BossStateMachine : MonoBehaviour
     {
-        [HideInInspector]public BossDataAndInitalizer bossData;
+        [HideInInspector] public BossDataAndInitalizer bossData;
 
 
         public IdleState idleState;
@@ -12,12 +12,19 @@ namespace Xavian
         public GroundedFireballState groundedFireballState;
         public ChaseState chaseState;
         public HurtState hurtState;
+        public LightingAttackState lightingAttackState;
 
         public bool CanChangeState = true;
 
 
         private BaseState currentState;
 
+
+        [ContextMenu("Lighting Attack")]
+        private void ForceLighting()
+        {
+            TransitionState(lightingAttackState);
+        }
 
         public void IntilaizeStateMachine(BossDataAndInitalizer boss)
         {

@@ -29,7 +29,6 @@ namespace Xavian
             BossTransform = transform;
         }
 
-
         private void OnDisable()
         {
             stunHandler.OnBossStunThreshholdReached -= BossStunned;

@@ -17,7 +17,6 @@ namespace Xavian
         private void Test()
         {
             Vector3 randomPos = GetRandomPointInArenaBounds();
-            Debug.Log(randomPos);
             GameObject t = Instantiate(attackIndicator);
             t.transform.position = randomPos;
 

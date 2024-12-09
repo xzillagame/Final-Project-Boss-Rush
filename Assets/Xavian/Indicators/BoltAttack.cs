@@ -13,6 +13,7 @@ namespace Xavian
         [SerializeField] private VisualEffect boltEffect;
 
         [SerializeField] private float damagerLifetime = 0.25f;
+        [SerializeField] private float objectLifetime = 0.75f;
 
 
         public void InitalizeBolt(Vector3 spawnPosition)
@@ -35,14 +36,21 @@ namespace Xavian
         private void Start()
         {
             StartCoroutine(TimetoDisableDamager());
+            StartCoroutine(TimeToDestory());
         }
 
 
-        IEnumerator TimetoDisableDamager()
+        private IEnumerator TimetoDisableDamager()
         {
             yield return new WaitForSeconds(damagerLifetime);
             capsule.enabled = false;
             OnBoltFinished.Invoke();
+        }
+
+        private IEnumerator TimeToDestory()
+        {
+            yield return new WaitForSeconds(objectLifetime);
+            Destroy(gameObject);
         }
 
 

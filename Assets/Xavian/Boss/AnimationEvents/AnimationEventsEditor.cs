@@ -1,6 +1,4 @@
-using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace Xavian
 {
@@ -39,6 +37,15 @@ namespace Xavian
 
         #endregion
 
+        #region Roar Events
+        bool roarDropdown = false;
+
+        SerializedProperty startRoarEvent;
+        SerializedProperty beginAttackRoarEvent;
+        SerializedProperty endRoarEvent;
+
+        #endregion
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -48,6 +55,7 @@ namespace Xavian
             BasicAttackPropertiesFoldoutAndUpdate();
             FireballPropertiesFoldoutAndUpdate();
             HurtPropertiesFoldoutAndUpdate();
+            RoarPropertiesFoldoutAndUpdate();
 
             serializedObject.ApplyModifiedProperties();
 
@@ -61,6 +69,7 @@ namespace Xavian
             BasicAttackPropertiesSetup();
             FireballShotPropertiesSetup();
             HurtAttackPropertiesSetup();
+            RoarPropertiesSetup();
         }
 
         private void FireballShotPropertiesSetup()
@@ -127,6 +136,26 @@ namespace Xavian
                 EditorGUILayout.PropertyField(endHurtEvent);
             }
         }
+
+        private void RoarPropertiesSetup()
+        {
+            startRoarEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnStartRoar));
+            beginAttackRoarEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnBeginRoarAttack));
+            endRoarEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndRoar));
+        }
+
+        private void RoarPropertiesFoldoutAndUpdate()
+        {
+            roarDropdown = EditorGUILayout.Foldout(roarDropdown, "Roar Events", true);
+            if(roarDropdown) 
+            {
+                EditorGUILayout.PropertyField(startRoarEvent);
+                EditorGUILayout.PropertyField(beginAttackRoarEvent);
+                EditorGUILayout.PropertyField(endRoarEvent);
+            }
+        }
+
+
 
 
     }

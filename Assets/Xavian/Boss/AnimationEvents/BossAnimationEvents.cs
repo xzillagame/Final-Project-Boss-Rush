@@ -50,6 +50,17 @@ namespace Xavian
 
         #endregion
 
+        #region Roar Event Recievers and Invokers
+
+        [HideInInspector] public UnityEvent OnStartRoar;
+        [HideInInspector] public UnityEvent OnBeginRoarAttack;
+        [HideInInspector] public UnityEvent OnEndRoar;
+
+        private void StartRoar() => OnStartRoar.Invoke();
+        private void BeginRoarAttack() => OnBeginRoarAttack.Invoke();
+        private void EndRoar() => OnEndRoar.Invoke();
+
+        #endregion
 
 
     }
