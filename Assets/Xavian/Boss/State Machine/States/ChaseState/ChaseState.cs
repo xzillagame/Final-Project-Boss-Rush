@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Xavian
 {
@@ -25,11 +24,14 @@ namespace Xavian
             base.EnterState(bossStateMachine);
             stateMachine.bossData.MeleeRangeCollider.enabled = true;
             stateMachine.bossData.BossAnimator.CrossFade(ChaseAnimHash, animCrossValue);
+            stateMachine.bossData.BossNavAgent.enabled = true;
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
+
+            stateMachine.bossData.BossNavAgent.SetDestination(stateMachine.bossData.XavianGameManager.Player.transform.position);
 
             currentChaseTime += Time.deltaTime;
 
@@ -44,6 +46,10 @@ namespace Xavian
         public override void ExitState()
         {
             base.ExitState();
+
+            stateMachine.bossData.BossNavAgent.enabled = false;
+
+
             stateMachine.bossData.MeleeRangeCollider.enabled = false;
             currentChaseTime = 0f;
         }

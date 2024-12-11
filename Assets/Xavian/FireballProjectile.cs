@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Xavian
@@ -7,6 +6,7 @@ namespace Xavian
     public class FireballProjectile : MonoBehaviour
     {
         [SerializeField] private float speed;
+        [SerializeField] private float bounceSpeedMultipler = 1.5f;
         [SerializeField] private Damager damager;
         [SerializeField] private Collider projectileCollider;
 
@@ -17,7 +17,6 @@ namespace Xavian
         [SerializeField] private LayerMask layerOfWallBounce;
 
         [SerializeField, Range(0,3)] private int numberOfWallBounces = 0;
-
 
         [SerializeField] private Color orbColor;
         [SerializeField] private Color flareColor;
@@ -30,6 +29,8 @@ namespace Xavian
         [SerializeField] private float lifeTime = 5f;
         private float currentLifeTime = 0;
 
+        [SerializeField] private bool isFinalPhaseAttack = false;
+        
         private Rigidbody rigidBody;
         private WaitForSeconds reflectionWaittime;
         private bool isRefelectable = false;
@@ -37,12 +38,20 @@ namespace Xavian
         private Vector3 direction;
 
         private Transform lastEntityOrgin;
-
+        private Transform bossTransformReference;
+        private Transform playerTransformReference;
 
 
         public void SetEntity(Transform transform)
         {
             lastEntityOrgin = transform;
+        }
+
+        public void SetFinalAttackEntites(Transform boss, Transform player)
+        {
+            lastEntityOrgin = boss;
+            bossTransformReference = boss;
+            playerTransformReference = player;
         }
 
         public void EnableReflect()
@@ -98,9 +107,20 @@ namespace Xavian
                 Vector3 directionTo = (lastEntityOrgin.position - transform.position).normalized;
                 direction.y = 0;
 
+                if(isFinalPhaseAttack)
+                {
+                    if(lastEntityOrgin == bossTransformReference)
+                    {
+                        lastEntityOrgin = playerTransformReference;
+                    }
+                    else if(lastEntityOrgin == playerTransformReference)
+                    {
+                        lastEntityOrgin = bossTransformReference;
+                    }
+                }
 
-                rigidBody.velocity = (directionTo * speed) * 1.5f;
 
+                rigidBody.velocity = (directionTo * rigidBody.velocity.magnitude) * bounceSpeedMultipler;
 
                 LayerMask storeDamageLayer = projectileCollider.includeLayers & layerThatReflectsProjectile;
                 LayerMask storeEntityLayer = projectileCollider.includeLayers & layerOfEntities;
@@ -119,6 +139,9 @@ namespace Xavian
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (isFinalPhaseAttack) return;
+
+
             int otherObjectLayerMask = 1 << collision.gameObject.layer;
 
             if( (otherObjectLayerMask & layerOfWallBounce) != 0 && numberOfWallBounces != 0 )

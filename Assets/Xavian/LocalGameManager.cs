@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 namespace Xavian
@@ -10,18 +11,10 @@ namespace Xavian
         [field: SerializeField] public MeshCollider GroundCollider { get; private set; }
         [SerializeField] private float boundsExtentsEdgeReduction = -2f;
 
+        [field: SerializeField] public Transform PlayerFinalStandoffPosition { get; private set; }
+        [field: SerializeField] public Transform BossFinalStandoffPosition { get; private set; }
 
-        [SerializeField] GameObject attackIndicator;
-
-        [ContextMenu("Test Bounds")]
-        private void Test()
-        {
-            Vector3 randomPos = GetRandomPointInArenaBounds();
-            GameObject t = Instantiate(attackIndicator);
-            t.transform.position = randomPos;
-
-        }
-        
+        [field: SerializeField] public CinemachineVirtualCamera FinalStandCamera { get; private set; }
 
         public Vector3 GetRandomPointInArenaBounds()
         {
@@ -46,6 +39,18 @@ namespace Xavian
 
         }
 
+        public void BeginFinalPhase()
+        {
+            Boss.transform.position = BossFinalStandoffPosition.position;
+            CharacterController controller = Player.GetComponent<CharacterController>();
+            controller.enabled = false;
+            Player.transform.position = PlayerFinalStandoffPosition.position;
+            controller.enabled = true;
+
+            Player.transform.LookAt(Boss.transform,Vector3.up);
+            Boss.transform.LookAt(Player.transform, Vector3.up);
+            FinalStandCamera.Priority += 5;
+        }
 
 
     }

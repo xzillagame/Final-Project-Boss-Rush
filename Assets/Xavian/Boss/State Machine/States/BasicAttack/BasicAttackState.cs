@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Xavian
@@ -12,6 +10,11 @@ namespace Xavian
 
         [SerializeField] private string AnimClipName = "Basic Attack";
         private int BasicAttackAnimHash;
+
+        [SerializeField,Range(0,5f)] private float turnRate = 0.75f;
+
+        [SerializeField] private int TimesToBiteBeforeTailSwipe = 2;
+        private int currentCount = 0;
 
         private void OnEnable()
         {
@@ -31,7 +34,6 @@ namespace Xavian
             stateMachine.bossData.BossAnimator.CrossFade(BasicAttackAnimHash, animCrossValue);
         }
 
-        [SerializeField,Range(0,5f)] private float turnRate = 0.75f;
 
         public override void UpdateState()
         {
@@ -69,12 +71,25 @@ namespace Xavian
 
         //Called from Animation Events
 
-        public void EnableDamageArea() => stateMachine.bossData.MeleeDamageCollider.enabled = true;
-        public void DisableDamageArea() => stateMachine.bossData.MeleeDamageCollider.enabled = false;
-        public void StartAnticipation() => stateMachine.bossData.BossAnimator.speed = AnimAnticpationSpeedRate;
-        public void EndAnticipation() => stateMachine.bossData.BossAnimator.speed = 1f;
+        private void EnableDamageArea() => stateMachine.bossData.MeleeDamageCollider.enabled = true;
+        private void DisableDamageArea() => stateMachine.bossData.MeleeDamageCollider.enabled = false;
+        private void StartAnticipation() => stateMachine.bossData.BossAnimator.speed = AnimAnticpationSpeedRate;
+        private void EndAnticipation() => stateMachine.bossData.BossAnimator.speed = 1f;
+        private void BasicAttackFinished()
+        {
+            currentCount += 1;
 
-        public void BasicAttackFinished() => stateMachine.TransitionState(stateMachine.idleState);
+            if (currentCount >= TimesToBiteBeforeTailSwipe)
+            {
+                currentCount = 0;
+                stateMachine.TransitionState(stateMachine.tailSpinState);
+            }
+            else
+            {
+                stateMachine.TransitionState(stateMachine.idleState);
+            }
+
+        }
 
 
 

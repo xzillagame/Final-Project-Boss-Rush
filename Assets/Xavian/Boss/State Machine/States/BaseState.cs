@@ -7,7 +7,7 @@ namespace Xavian
     {
         protected BossStateMachine stateMachine;
 
-        public event UnityAction OnStateCompleted;
+        public UnityAction OnStateCompleted;
 
         protected void FireStateCompletedEvent() => OnStateCompleted?.Invoke();
 

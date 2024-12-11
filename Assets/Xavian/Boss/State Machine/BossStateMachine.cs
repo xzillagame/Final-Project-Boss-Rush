@@ -6,32 +6,33 @@ namespace Xavian
     {
         [HideInInspector] public BossDataAndInitalizer bossData;
 
-
         public IdleState idleState;
         public BasicAttackState basicAttackState;
-        public GroundedFireballState groundedFireballState;
         public ChaseState chaseState;
+        public DeathState deathState;
         public HurtState hurtState;
+
+        public BaseState initialState;
+
+        public GroundedFireballState groundedFireballState;
         public LightingAttackState lightingAttackState;
+        public TailSpinState tailSpinState;
+
+
+        public BaseState[] specialAttacks;
 
         public bool CanChangeState = true;
 
 
-        private BaseState currentState;
+        protected BaseState currentState;
 
-
-        [ContextMenu("Lighting Attack")]
-        private void ForceLighting()
-        {
-            TransitionState(lightingAttackState);
-        }
-
-        public void IntilaizeStateMachine(BossDataAndInitalizer boss)
+        public virtual void IntilaizeStateMachine(BossDataAndInitalizer boss)
         {
             bossData = boss;
 
-            currentState = idleState;
+            currentState = initialState;
             currentState.EnterState(this);
+
         }
 
         public void TransitionState(BaseState nextState)
@@ -45,7 +46,26 @@ namespace Xavian
             }
         }
 
+        public void OverrideState(BaseState nextState)
+        {
+            if(nextState != null)
+            {
+                currentState.ExitState();
+                currentState = nextState;
+                currentState.EnterState(this);
+            }
+        }
 
+        public void EnterDeathState()
+        {
+            CanChangeState = false;
+            OverrideState(deathState);
+        }
+
+        public BaseState GetRandomSpecialAttack()
+        {
+            return specialAttacks.GetRandomFromArray();
+        }
 
         private void Update()
         {
@@ -56,10 +76,6 @@ namespace Xavian
         {
             currentState.FixedUpdateState();
         }
-
-
-
-
 
 
     }

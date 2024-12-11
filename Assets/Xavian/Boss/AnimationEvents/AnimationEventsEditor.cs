@@ -46,6 +46,28 @@ namespace Xavian
 
         #endregion
 
+        #region Tail Spin Events
+
+        bool tailSpinDropdown = false;
+
+        SerializedProperty startTailSpinEvent;
+        SerializedProperty tailSpinRotateEndEvent;
+        SerializedProperty returnFromTailSwipeEvent;
+        SerializedProperty endTailSpinEvent;
+
+        #endregion
+
+        #region Death Events
+
+        bool deathDropdown = false;
+
+        SerializedProperty startDeathEvent;
+        SerializedProperty beforeDeathPeakEvent;
+        SerializedProperty deathPeakEvent;
+        SerializedProperty endDeathEvent;
+
+        #endregion
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -56,6 +78,8 @@ namespace Xavian
             FireballPropertiesFoldoutAndUpdate();
             HurtPropertiesFoldoutAndUpdate();
             RoarPropertiesFoldoutAndUpdate();
+            DeathPropertiesFoldoutAndUpdate();
+            TailSpinPropertiesFoldoutAndUpdate();
 
             serializedObject.ApplyModifiedProperties();
 
@@ -70,6 +94,8 @@ namespace Xavian
             FireballShotPropertiesSetup();
             HurtAttackPropertiesSetup();
             RoarPropertiesSetup();
+            DeathPropertiesSetup();
+            TailSpinPropertiesSetup();
         }
 
         private void FireballShotPropertiesSetup()
@@ -80,11 +106,10 @@ namespace Xavian
             endFireballShotAnticipation = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndFireballAnticipation));
             fireballShotLaunched = serializedObject.FindProperty(nameof(bossAnimationEvents.OnFireballLaunched));
         }
-
         private void FireballPropertiesFoldoutAndUpdate()
         {
             fireballAttackDropdown = EditorGUILayout.Foldout(fireballAttackDropdown, "Fireball Shot Events", true);
-            if (fireballAttackDropdown) 
+            if (fireballAttackDropdown)
             {
                 EditorGUILayout.PropertyField(startFireballShot);
                 EditorGUILayout.PropertyField(startFireballShotAnticipation);
@@ -93,7 +118,6 @@ namespace Xavian
                 EditorGUILayout.PropertyField(fireballShotLaunched);
             }
         }
-
 
         private void BasicAttackPropertiesSetup()
         {
@@ -120,17 +144,15 @@ namespace Xavian
             }
         }
 
-
         private void HurtAttackPropertiesSetup()
         {
             startHurtEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnStartHurt));
             endHurtEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndHurt));
         }
-
         private void HurtPropertiesFoldoutAndUpdate()
         {
             hurtDropdown = EditorGUILayout.Foldout(hurtDropdown, "Hurt Events", true);
-            if(hurtDropdown)
+            if (hurtDropdown)
             {
                 EditorGUILayout.PropertyField(startHurtEvent);
                 EditorGUILayout.PropertyField(endHurtEvent);
@@ -143,11 +165,10 @@ namespace Xavian
             beginAttackRoarEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnBeginRoarAttack));
             endRoarEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndRoar));
         }
-
         private void RoarPropertiesFoldoutAndUpdate()
         {
             roarDropdown = EditorGUILayout.Foldout(roarDropdown, "Roar Events", true);
-            if(roarDropdown) 
+            if (roarDropdown)
             {
                 EditorGUILayout.PropertyField(startRoarEvent);
                 EditorGUILayout.PropertyField(beginAttackRoarEvent);
@@ -155,7 +176,45 @@ namespace Xavian
             }
         }
 
+        private void DeathPropertiesSetup()
+        {
+            startDeathEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnStartDeath));
+            beforeDeathPeakEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnBeforeDeathPeak));
+            deathPeakEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnDeathPeak));
+            endDeathEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndDeath));
+        }
+        private void DeathPropertiesFoldoutAndUpdate()
+        {
+            deathDropdown = EditorGUILayout.Foldout(deathDropdown, "Death Events", true);
+            if (deathDropdown)
+            {
+                EditorGUILayout.PropertyField(startDeathEvent);
+                EditorGUILayout.PropertyField(beforeDeathPeakEvent);
+                EditorGUILayout.PropertyField(deathPeakEvent);
+                EditorGUILayout.PropertyField(endDeathEvent);
+            }
+        }
 
+        private void TailSpinPropertiesSetup()
+        {
+            startTailSpinEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnStartTailSpin));
+            tailSpinRotateEndEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnTailSpinRotateEnd));
+            returnFromTailSwipeEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnReturnFromTailSwipe));
+            endTailSpinEvent = serializedObject.FindProperty(nameof(bossAnimationEvents.OnEndTailSpin));
+        }
+        private void TailSpinPropertiesFoldoutAndUpdate()
+        {
+            tailSpinDropdown = EditorGUILayout.Foldout(tailSpinDropdown, "Tail Spin Events", true);
+
+            if(tailSpinDropdown) 
+            {
+                EditorGUILayout.PropertyField(startTailSpinEvent);
+                EditorGUILayout.PropertyField(tailSpinRotateEndEvent);
+                EditorGUILayout.PropertyField(returnFromTailSwipeEvent);
+                EditorGUILayout.PropertyField(endTailSpinEvent);
+            }
+
+        }
 
 
     }

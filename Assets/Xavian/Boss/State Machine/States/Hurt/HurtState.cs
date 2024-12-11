@@ -6,6 +6,7 @@ namespace Xavian
     {
         [SerializeField] private string AnimClipName = "Get Hit";
         private int HurtAnimHash;
+        [SerializeField] private bool useSpecialAttackAfterStun;
 
         private void OnEnable()
         {
@@ -21,6 +22,7 @@ namespace Xavian
             stateMachine.bossData.BossAnimEvents.OnEndHurt.AddListener(EndHurt);
             stateMachine.bossData.BossAnimator.Play(HurtAnimHash,-1,0.08f);
 
+
         }
 
 
@@ -33,8 +35,19 @@ namespace Xavian
 
         private void EndHurt()
         {
+            OnStateCompleted?.Invoke();
+
             stateMachine.CanChangeState = true;
-            stateMachine.TransitionState(stateMachine.idleState);
+
+            if (useSpecialAttackAfterStun)
+            {
+                stateMachine.TransitionState(stateMachine.GetRandomSpecialAttack());
+            }
+            else
+            {
+                stateMachine.TransitionState(stateMachine.idleState);
+            }
+
         }
 
     }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -120,6 +119,35 @@ public class Damageable : MonoBehaviour
         yield return new WaitForSeconds(iTime * 0.9f);
 
         renderer.materials = originalMats;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void SetCurrentHealth(int amount)
+    {
+        currentHealth = amount;
+    }
+
+    public void AddToHealth(int amount)
+    {
+        currentHealth += amount;
+
+        if (currentHealth >= maxHealth)
+            currentHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(amount, currentHealth);
+    }
+
+    public void HealToFull()
+    {
+        var diff = maxHealth - currentHealth;
+
+        currentHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(diff, currentHealth);
     }
 
     [ContextMenu("Test Hit")]

@@ -46,10 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81ee2a011d9f20044b6e34f361ce4e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnBoltFinished:
+    m_PersistentCalls:
+      m_Calls: []
   capsule: {fileID: 2235751752667890670}
   boltEffect: {fileID: 1278410035457800702}
-  objectLifetime: 1
   damagerLifetime: 0.25
+  objectLifetime: 1
+  thunderAudioClip: {fileID: 8300000, guid: 310f617ad559246478ec50220ec68098, type: 3}
 --- !u!1 &5087622851564500355
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +179,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3710549762602393561}
     m_Modifications:
+    - target: {fileID: 2311339260240998539, guid: 8cf94e12ea72f704d9c77d16049739e2, type: 3}
+      propertyPath: damageAmount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3255969592041929624, guid: 8cf94e12ea72f704d9c77d16049739e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

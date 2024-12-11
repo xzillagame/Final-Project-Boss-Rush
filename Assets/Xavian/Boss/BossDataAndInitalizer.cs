@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Xavian
 {
@@ -16,16 +17,23 @@ namespace Xavian
 
         [SerializeField] private BossStateMachine stateMachine;
 
+        [field: SerializeField] public Sensor MeleeRangeSensor { get; private set; }
         [field: SerializeField] public BoxCollider MeleeRangeCollider { get; private set; }
         [field: SerializeField] public BoxCollider MeleeDamageCollider { get; private set; }
 
         [SerializeField] private BossStunHandler stunHandler;
+        [field: SerializeField] public Damageable BossDamageable { get; private set; }
 
         [field:SerializeField] public Transform BossCenterPoint {get; private set; }
 
-        private void OnEnable()
+        [field: SerializeField] public NavMeshAgent BossNavAgent { get; private set; }
+
+        [field: SerializeField] public BoxCollider BossFireballReflectCollider { get; private set; }
+
+        private void Start()
         {
             stunHandler.OnBossStunThreshholdReached += BossStunned;
+            stateMachine.IntilaizeStateMachine(this);
             BossTransform = transform;
         }
 
@@ -34,18 +42,21 @@ namespace Xavian
             stunHandler.OnBossStunThreshholdReached -= BossStunned;
         }
 
-        private void BossStunned()
-        {
-            stateMachine.TransitionState(stateMachine.hurtState);
-        }
 
-        private void Start()
+        public void GoToNextBossPhase(BossStateMachine nextStateMachine)
         {
+            //stateMachine.gameObject.SetActive(false);
+            stateMachine.gameObject.SetActive(false);
+            stateMachine = nextStateMachine;
+            stateMachine.gameObject.SetActive(true);
             stateMachine.IntilaizeStateMachine(this);
         }
 
 
-
+        private void BossStunned()
+        {
+            stateMachine.TransitionState(stateMachine.hurtState);
+        }
 
     }
 }

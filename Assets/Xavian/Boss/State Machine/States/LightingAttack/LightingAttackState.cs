@@ -11,10 +11,12 @@ namespace Xavian
         [SerializeField, Range(0.01f, 1f)] private float animCrossValue = 0.5f;
 
         [SerializeField] private string AnimClipName = "Scream";
+        [SerializeField] private string AfterRoarAnimClipName = "Idle";
         private int RoarAnimHash;
+        private int AfterRoarAnimHash;
 
         [SerializeField] private int totalLightingStrikesInPool = 50;
-        [SerializeField] private int lightingStrikeCount = 5;
+        [SerializeField] public int lightingStrikeCount = 5;
 
         [SerializeField] private AttackIndiactor lightingAttack;
 
@@ -27,8 +29,9 @@ namespace Xavian
         private void OnEnable()
         {
             RoarAnimHash = Animator.StringToHash(AnimClipName);
+            AfterRoarAnimHash = Animator.StringToHash(AfterRoarAnimClipName);
 
-            for(int i = 0; i < totalLightingStrikesInPool; i++) 
+            for (int i = 0; i < totalLightingStrikesInPool; i++) 
             {
                 AttackIndiactor newLightingStrike = Instantiate(lightingAttack);
                 lightingAttack.gameObject.SetActive(false);
@@ -65,7 +68,7 @@ namespace Xavian
 
         private void EndRoarAnimation()
         {
-            stateMachine.bossData.BossAnimator.CrossFade("Idle", animCrossValue, -1);
+            stateMachine.bossData.BossAnimator.CrossFade(AfterRoarAnimHash, animCrossValue, -1);
         }
 
 
@@ -77,8 +80,10 @@ namespace Xavian
 
         private IEnumerator SpawnLightingStrikes()
         {
+
             for(int i = 0; i < lightingStrikeCount; i++) 
             {
+
                 AttackIndiactor newAttack = lightingAttackQueue.Dequeue();
                 newAttack.transform.position = stateMachine.bossData.XavianGameManager.GetRandomPointInArenaBounds();
                 newAttack.gameObject.SetActive(true);
@@ -101,6 +106,7 @@ namespace Xavian
         {
             stateMachine.CanChangeState = true;
             stateMachine.TransitionState(stateMachine.idleState);
+            OnStateCompleted?.Invoke();
         }
 
 

@@ -62,6 +62,34 @@ namespace Xavian
 
         #endregion
 
+        #region Tail Spin Event Recievers and Invokers
+
+        [HideInInspector] public UnityEvent OnStartTailSpin;
+        [HideInInspector] public UnityEvent OnTailSpinRotateEnd;
+        [HideInInspector] public UnityEvent OnReturnFromTailSwipe;
+        [HideInInspector] public UnityEvent OnEndTailSpin;
+
+        private void StartTailSpin() => OnStartTailSpin.Invoke();
+        private void TailSpinRotateEnd() => OnTailSpinRotateEnd.Invoke();
+        private void ReturnFromTailSwipe() => OnReturnFromTailSwipe.Invoke();
+        private void EndTailSpin() => OnEndTailSpin.Invoke();
+
+        #endregion
+
+        #region Death Event Recievers and Invokers
+
+        [HideInInspector] public UnityEvent OnStartDeath;
+        [HideInInspector] public UnityEvent OnBeforeDeathPeak;
+        [HideInInspector] public UnityEvent OnDeathPeak;
+        [HideInInspector] public UnityEvent OnEndDeath;
+
+        private void StartDeath() => OnStartDeath.Invoke();
+        private void BeforeDeathPeak() => OnBeforeDeathPeak.Invoke();
+        private void DeathPeak() => OnDeathPeak.Invoke();
+        private void EndDeath() => OnEndDeath.Invoke();
+
+
+        #endregion
 
     }
 

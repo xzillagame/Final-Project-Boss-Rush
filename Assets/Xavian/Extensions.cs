@@ -24,6 +24,14 @@ namespace Xavian
 
         }
 
+        public static T GetRandomFromArray<T>(this T[] inputArray)
+        {
+            int randomIndex = Random.Range(0, inputArray.Length);
+
+            return inputArray[randomIndex];
+
+        }
+
 
 
 

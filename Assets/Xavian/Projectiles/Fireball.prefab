@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: -8016518609790894935}
   - component: {fileID: 6896731530125416003}
   m_Layer: 0
-  m_Name: TempFireball
+  m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  bounceSpeedMultipler: 1.5
   damager: {fileID: -8016518609790894935}
   projectileCollider: {fileID: 2431030109771705608}
   hitCooldown: 0.25
@@ -250,6 +251,8 @@ MonoBehaviour:
   orbEffectParticleSystem: {fileID: 2420024450278738143}
   flareEffectParticleSystem: {fileID: 5031555102306248659}
   addetiveColorTrail: {fileID: 944585184256685482}
+  lifeTime: 5
+  isFinalPhaseAttack: 0
 --- !u!114 &-8016518609790894935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d91920f1168024cad6f2f46528b94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 0
+  damageAmount: 2
   knockbackForce: 1
   hitEffectPrefab: {fileID: 0}
   hitSounds: {fileID: 0}

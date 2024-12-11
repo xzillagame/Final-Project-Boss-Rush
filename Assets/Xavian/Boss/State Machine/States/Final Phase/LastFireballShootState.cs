@@ -5,13 +5,13 @@ using UnityEngine.Events;
 
 namespace Xavian
 {
-    public class GroundedFireballState : BaseState
+    public class LastFireballShootState : BaseState
     {
         [SerializeField] private FireballProjectile basicFireballProjectile;
 
         [SerializeField, Range(0.01f, 1f)] private float animCrossValue = 0.5f;
-        [SerializeField, Range(0.1f , 1f)] private float AnimAnticpationSpeedRate = 0.5f;
-        [SerializeField,Range(0.1f,1.5f)] private float reverseAnimSpeed = 0.25f;
+        [SerializeField, Range(0.1f, 1f)] private float AnimAnticpationSpeedRate = 0.5f;
+        [SerializeField, Range(0.1f, 1.5f)] private float reverseAnimSpeed = 0.25f;
 
         private float currentAnimAnticipationSpeed = 1f;
         [SerializeField] private int timesToShootProjectile = 1;
@@ -38,8 +38,6 @@ namespace Xavian
         {
             base.EnterState(bossStateMachine);
 
-            stateMachine.CanChangeState = false;
-
             canTurn = false;
 
             stateMachine.bossData.BossAnimEvents.OnStartFireballAnticipation.AddListener(BeginFireballAnticipation);
@@ -49,12 +47,12 @@ namespace Xavian
 
 
             List<int> fireballShootIndex = new List<int>(new int[timesToShootProjectile]);
-            for(int i = 0; i < timesToShootProjectile;i++) 
+            for (int i = 0; i < timesToShootProjectile; i++)
             {
                 fireballShootIndex[i] = i;
             }
 
-            for(int i = 0; i < numberOfReflectableFireballs; ++i)
+            for (int i = 0; i < numberOfReflectableFireballs; ++i)
             {
                 int possibleIndexForReflect = fireballShootIndex.RandomPopFromList<int>();
                 indexToShootReflectableFireballs.Add(possibleIndexForReflect);
@@ -68,7 +66,7 @@ namespace Xavian
         {
             base.UpdateState();
 
-            if(canTurn)
+            if (canTurn)
             {
                 Vector3 directionTo = (stateMachine.bossData.XavianGameManager.Player.transform.position
                                         - stateMachine.bossData.BossTransform.position);
@@ -116,7 +114,7 @@ namespace Xavian
         {
             canTurn = false;
 
-            if(currentShootProjectileCounter != 0)
+            if (currentShootProjectileCounter != 0)
             {
                 stateMachine.bossData.BossAnimator.SetFloat("FireballShotReverseValue", 1f);
             }
@@ -126,8 +124,8 @@ namespace Xavian
 
         private void FireballShotAttackFinished()
         {
-            stateMachine.CanChangeState = true;
             stateMachine.TransitionState(stateMachine.idleState);
+            OnStateCompleted?.Invoke();
         }
 
         private void ShootFireball()
@@ -138,10 +136,10 @@ namespace Xavian
 
             FireballProjectile newProjecitle = Instantiate<FireballProjectile>(basicFireballProjectile, spawnLocation.position, spawnLocation.rotation);
             OnSpawnedFireball?.Invoke(newProjecitle);
-            newProjecitle.SetEntity(stateMachine.bossData.BossCenterPoint);
+            newProjecitle.SetFinalAttackEntites(stateMachine.bossData.BossCenterPoint, stateMachine.bossData.XavianGameManager.Player.transform);
             newProjecitle.transform.forward = stateMachine.bossData.transform.forward;
 
-            if(indexToShootReflectableFireballs.Count > 0
+            if (indexToShootReflectableFireballs.Count > 0
                 && indexToShootReflectableFireballs.Contains(currentShootProjectileCounter))
             {
                 newProjecitle.EnableReflect();
@@ -155,7 +153,7 @@ namespace Xavian
 
                 float currentTime = stateMachine.bossData.BossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-                stateMachine.bossData.BossAnimator.Play(0,-1,currentTime - 0.04f);
+                stateMachine.bossData.BossAnimator.Play(0, -1, currentTime - 0.04f);
 
                 currentAnimAnticipationSpeed = 1f;
                 stateMachine.bossData.BossAnimator.SetFloat("FireballShotReverseValue", -reverseAnimSpeed);

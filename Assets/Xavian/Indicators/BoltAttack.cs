@@ -15,6 +15,8 @@ namespace Xavian
         [SerializeField] private float damagerLifetime = 0.25f;
         [SerializeField] private float objectLifetime = 0.75f;
 
+        [SerializeField] private AudioClip thunderAudioClip;
+
 
         public void InitalizeBolt(Vector3 spawnPosition)
         {
@@ -29,6 +31,9 @@ namespace Xavian
             transform.position = newPosition;
 
             boltEffect.Play();
+
+            if(Random.Range(0f, 1f) >= (1f - 0.2f) )
+            SoundEffectsManager.instance.PlayAudioClip(thunderAudioClip, true);
 
         }
 

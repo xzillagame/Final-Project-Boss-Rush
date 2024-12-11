@@ -7,6 +7,8 @@ namespace Xavian
         [SerializeField] private float MaxIdleTime = 2f;
         private float currentIdleTime = 0f;
 
+        [SerializeField] private bool CanExitIdleThroughTime = true;
+
         [SerializeField, Range(0.01f, 1f)] private float animCrossValue = 0.25f;
 
         [SerializeField] private string AnimClipName = "Idle";
@@ -26,6 +28,9 @@ namespace Xavian
 
         public override void UpdateState()
         {
+
+            if (!CanExitIdleThroughTime) return;
+
             base.UpdateState();
 
             currentIdleTime += Time.deltaTime;
